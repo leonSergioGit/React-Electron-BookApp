@@ -22,7 +22,6 @@ const Home = () => {
 
     const checking = () => {
         getBooks();
-
     }
 
     return (
