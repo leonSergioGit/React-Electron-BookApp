@@ -18,9 +18,7 @@ const BookState = props => {
 
     //Add contact
     const addBooks = book => {
- 
         dispatch({ type: ADD_BOOK, payload: book });
-
     }
 
     const getBooks = () => {

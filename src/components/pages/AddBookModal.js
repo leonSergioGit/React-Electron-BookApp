@@ -11,9 +11,11 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 
 
+
 import '../../index.css';
 
-
+var app = window.require('electron').remote;
+const fs = app.require('fs');
 
 // Default material styles
 const useStyles = makeStyles(theme => ({
@@ -40,7 +42,8 @@ const TransitionsModal = () => {
       name: '',
       language: '',
       author: '',
-      date: '' 
+      date: '',
+      finished: false 
   });
 
   // Context to access to the global state
@@ -51,7 +54,21 @@ const TransitionsModal = () => {
   // Submit function
   const onSubmit = e =>  {
     e.preventDefault();
-    addBooks(new Book(uuid(), books.name, books.language, books.author, books.date));
+    addBooks(new Book(uuid(), books.name, books.language, books.author, books.date, books.finished));
+    console.log(books)
+    setBook({
+      id: '',
+      name: '',
+      language: '',
+      author: '',
+      date: '',
+      finished: false
+    })
+
+    fs.appendFile('books.txt', `${books.name};${books.author};${books.language};${books.date};${books.finished}\n`, function (err) {
+      if (err) throw err;
+      console.log('Saved!');
+    });
   }
 
   //On change function to update this component's state with the new book
@@ -138,6 +155,13 @@ const TransitionsModal = () => {
                   onChange={onChange}
                   name="date" 
                 />
+              </div>
+              <div>
+                <span>Finished: </span>
+                <label htmlFor="">Yes</label>      
+                <input type="radio" name="finished" value={true} onChange={onChange}/>
+                <label htmlFor="">No</label>
+                <input type="radio" name="finished" value={false} onChange={onChange}/>
               </div>
               <Button 
                 variant="contained" 

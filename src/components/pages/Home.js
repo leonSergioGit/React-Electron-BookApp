@@ -17,7 +17,7 @@ const Home = () => {
 
     const onSubmit = (e) =>  {
         e.preventDefault();
-        addBooks(new Book("23123", "Norwegian Wood", "Haruki Murakami", "Japanese", "June"));
+        addBooks(new Book("23123", "Norwegian Wood", "Haruki Murakami", "Japanese", "June", false));
     }
 
     const checking = () => {
