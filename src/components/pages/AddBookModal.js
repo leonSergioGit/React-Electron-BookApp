@@ -49,55 +49,38 @@ const TransitionsModal = () => {
   });
 
   //UseState hooks to check input validation
-  const [validName, setValidName] = useState(false);
-  const [validAuthor, setValidAuthor] = useState(false);
-  const [validLanguage, setValidLanguage] = useState(false);
-  const [validDate, setValidDate] = useState(false);
+  const [validName, setValidName] = useState(true);
+  const [validAuthor, setValidAuthor] = useState(true);
+  const [validLanguage, setValidLanguage] = useState(true);
+  const [validDate, setValidDate] = useState(true);
 
 
  
   // Context to access to the global state
   const bookContext =  useContext(BookContext);
-  const { addBooks, getBooks } = bookContext;
+  const { addBooks, getBooks, checkBooks } = bookContext;
 
   //Use effect runs after every render
   //We pass as array values the state that we want useEffect to check
+  let count = 0;
   useEffect(() => {
-    saveData();
+      
+      checkBooks();
+    
   }, [validName, validAuthor, validLanguage, validDate]);
 
   // Submit function
   const onSubmit = e =>  {
     e.preventDefault();
-
-      if(books.name.trim() == ""){
-        setValidName(false);
-      } else {
-        setValidName(true);
-      }
-
-      if(books.author.trim() == ""){
-        setValidAuthor(false);
-      } else {
-        setValidAuthor(true);
-      }
-      if(books.language.trim() == ""){
-        setValidLanguage(false);
-      } else {
-        setValidLanguage(true);
-      }
-
-      if(books.date.trim() == ""){
-        setValidDate(false);
-      } else {
-        setValidDate(true);
-      }
-    } 
+    saveData();
+  } 
   
     //Function that save our book in a file and updates our state
    const saveData = () => {
-    if(validName == true && validAuthor == true && validLanguage == true && validDate == true){
-      addBooks(new Book(uuid(), books.name, books.language, books.author, books.date, books.finished));
+     
+    if(validName == true && validAuthor == true && validLanguage == true && validDate == true && books.name.trim() != ""){
+      let idBook = uuid();
+      addBooks(idBook, books.name, books.language, books.author, books.date, books.finished);
       setBook({
         id: '',
         name: '',
@@ -107,11 +90,10 @@ const TransitionsModal = () => {
         finished: false
       })
   
-      fs.appendFile('books.txt', `${books.name};${books.author};${books.language};${books.date};${books.finished}\n`, function (err) {
+      fs.appendFile('books.txt', `${books.name};${books.author};${books.language};${books.date};${books.finished};${idBook}\n`, function (err) {
         if (err) throw err;
         console.log('Saved!');
       });
-
       handleClose();
     }
   }
@@ -119,7 +101,32 @@ const TransitionsModal = () => {
   //On change function to update this component's state with the new book
   const onChange = e => {
     setBook({ ...books, [e.target.name]: e.target.value })
+    validation();
   };
+
+  const validation = () => {
+    if(books.name.trim() == ""){
+      setValidName(false);
+    } else {
+      setValidName(true);
+    }
+
+    if(books.author.trim() == ""){
+      setValidAuthor(false);
+    } else {
+      setValidAuthor(true);
+    }
+    if(books.language.trim() == ""){
+      setValidLanguage(false);
+    } else {
+      setValidLanguage(true);
+    }
+    if(books.date.trim() == ""){
+      setValidDate(false);
+    } else {
+      setValidDate(true);
+    }
+  }
 
   // Current date
   const date = new Date;
@@ -195,7 +202,7 @@ const TransitionsModal = () => {
                 />
               </div>
               <div>
-              <Warning message={validDate ? "" : "Add a date"} />
+              <Warning message={validDate ? '' : 'Add a date'} />
                 <TextField
                   id="date"
                   label="Date"
