@@ -24,10 +24,10 @@ const BookItem = ({ bookArr }) => {
            {bookArr.map(book =>
                 <div key={book.id} className="bookElement">
                         <h1>{book.name}</h1>
-                        <p>{book.author}</p>
-                        <p>{book.language}</p>
-                        <p>{book.date}</p>
-                        <p>{book.language == "true" ? "Completed" : "Not yet"}</p>
+                        <p><b>Author:</b> {book.author}</p>
+                        <p><b>Language:</b> {book.language}</p>
+                        <p><b>Date:</b> {book.date}</p>
+                        <p><b>State:</b> {book.finished == "true" ? "Completed" : "Not yet"}</p>
                 </div>
             )}
         </Fragment>

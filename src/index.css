@@ -28,4 +28,14 @@ code {
 .bookContainer {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 10px;
+  row-gap: 10px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.bookElement {
+  border: 2px solid #dba718;
+  border-radius: 5px;
+  padding: 10px;
 }

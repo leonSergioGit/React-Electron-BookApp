@@ -1,35 +1,28 @@
-import React, { Fragment, useState, useContext, useEffect } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import BookContext from '../context/bookContext';
-import BookItem from './BookItem';
 import BookModel from '../model/Book';
 
-var app = window.require('electron').remote;
-const fs = app.require('fs');
 
-const Books = ({ allBooks }) => {
+
+const Info = ({ allBooks }) => {
 
     const bookContext =  useContext(BookContext);
-    const { books, getBooks, trying } = bookContext;
+    const { books, getBooks } = bookContext;
 
-    
-    const [listOfBooks, setListOfBooks] = useState(fs.readFileSync('books.txt','utf8').split('\n'));
+    const [listOfBooks, setListOfBooks] = useState();
 
+    //State to manage the information of all the books.
+    
     
 
-    let p = allBooks;
-    
-    //Use effect hook. Runs everytime the value we pass in the array changes
-    //So it runs everytime we add a new book. Reads the file, updates the local state and shows instantaneously the book added
+   
     useEffect(() => {
-        let bookData = fs.readFileSync('books.txt','utf8').split('\n');
-        setListOfBooks(bookData); 
-    }, [p]);
+        console.log(arr)
+    }, [allBooks]); 
 
-    
-
-
-        let arr = [];
-        listOfBooks.forEach(book => {
+    //Find a way to improve this part of the code
+    let arr = [];
+       allBooks.forEach(book => {
             let indexName = book.indexOf(";", 0);
             let firstIndexLanguage = book.indexOf(";") + 1;
             let secondIndexLanguage = book.indexOf(";", book.indexOf(";") + 2);
@@ -56,12 +49,12 @@ const Books = ({ allBooks }) => {
 
         })
 
-
     return (
-        <div className="bookContainer">
-            <BookItem bookArr={arr} />
+        <div className="info">
+            {arr.length}
+            
         </div>
     )
 }
 
-export default Books;
+export default Info;
