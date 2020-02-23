@@ -3,6 +3,7 @@ import BookContext from '../context/bookContext';
 import BookItem from './BookItem';
 import BookModel from '../model/Book';
 
+
 var app = window.require('electron').remote;
 const fs = app.require('fs');
 
@@ -11,6 +12,7 @@ const Books = ({ allBooks }) => {
     const bookContext =  useContext(BookContext);
     const { books, getBooks, trying } = bookContext;
 
+
     
     const [listOfBooks, setListOfBooks] = useState(fs.readFileSync('books.txt','utf8').split('\n'));
 
@@ -18,13 +20,20 @@ const Books = ({ allBooks }) => {
 
     let p = allBooks;
     
+    let japanese = 0;
+    let english = 0;
+    let french = 0;
+    let spanish = 0;
+
     //Use effect hook. Runs everytime the value we pass in the array changes
     //So it runs everytime we add a new book. Reads the file, updates the local state and shows instantaneously the book added
     useEffect(() => {
         let bookData = fs.readFileSync('books.txt','utf8').split('\n');
-        setListOfBooks(bookData); 
+        setListOfBooks(bookData);
     }, [p]);
 
+
+    console.log(books)
     
 
 
@@ -50,16 +59,28 @@ const Books = ({ allBooks }) => {
             let completed = book.substring(firstIndexCompleted, secondIndexCompleted);
             let id = book.substring(firstIndexId, secondIndexId);
     
+            let newBook = new BookModel(id, name, author, language, date, completed)
             
-    
-            arr.push(new BookModel(id, name, language, author, date, completed));   
+            if(newBook.language === "Japanese") {
+                japanese++;
+            }
+
+        
+            arr.push(newBook);   
 
         })
 
 
+
+
     return (
         <div className="bookContainer">
+            <h3>General information</h3>
+            <div>
+                <span>Books in Japanese: <b>{japanese}</b></span>
+            </div>
             <BookItem bookArr={arr} />
+
         </div>
     )
 }

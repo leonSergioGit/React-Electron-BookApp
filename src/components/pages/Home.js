@@ -3,7 +3,7 @@ import Modal from './AddBookModal';
 import Book from '../model/Book';
 import BookContext from '../context/bookContext';
 import Books from '../books/Books';
-import Info from '../books/Info';
+
 
 const Home = () => {
     const bookContext =  useContext(BookContext);
@@ -20,7 +20,6 @@ const Home = () => {
 
     return (
         <div>
-            <Info allBooks={books} />
             <Modal />
             <Books allBooks={books} />
         </div>

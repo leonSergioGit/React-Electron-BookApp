@@ -31,6 +31,8 @@ const BookState = props => {
     const getBooks = () => {
         let books = fs.readFileSync('books.txt','utf8').split("\n");
         dispatch({ type: GET_BOOKS, payload: books });
+        console.log("hello from get books")
+        
     }
 
     const checkBooks = () => {
